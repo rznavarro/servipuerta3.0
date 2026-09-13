@@ -179,9 +179,8 @@
           </div>
         </div>
 
-        <div data-cyl-wrap="1" style="position:relative;border:1px solid rgba(255,255,255,0.12);border-radius:6px;overflow:hidden;background:#0E0E10;aspect-ratio:4/3;min-height:260px">
-          <img data-cyl-fallback="1" src="images/mecanismo-corte.jpg" alt="Corte técnico de un cilindro de cerradura mostrando los pines y resortes internos" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.6s ease" />
-          <canvas data-cyl-canvas="1" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.8s ease;pointer-events:none"></canvas>
+        <div style="position:relative;border:1px solid rgba(255,255,255,0.12);border-radius:6px;overflow:hidden;background:#0E0E10;aspect-ratio:4/3;min-height:260px">
+          <img src="images/mecanismo-corte.jpg" alt="Corte técnico de un cilindro de cerradura mostrando los pines y resortes internos" style="width:100%;height:100%;object-fit:cover;display:block" />
           <span style="position:absolute;left:14px;bottom:14px;z-index:2;font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF;padding:6px 10px;border-radius:4px;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.2)">Cilindro de pines — corte técnico</span>
         </div>
       </div>
@@ -425,7 +424,7 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;efectos3d&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Movimiento&quot;},&quot;particulasHero&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Movimiento&quot;},&quot;barraMovilFija&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Móvil&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;particulasHero&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Movimiento&quot;},&quot;barraMovilFija&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Móvil&quot;}}">
 class Component extends DCLogic {
   componentDidMount() {
     this.root = document.body;
@@ -439,7 +438,6 @@ class Component extends DCLogic {
       this.setupFaq();
       if (!this.reduced) {
         if (this.props.particulasHero !== false && !this.narrow) this.setupDust();
-        if (this.props.efectos3d !== false && !this.narrow) this.setupCylinder();
       }
       this.setupBlink();
     });
@@ -615,128 +613,6 @@ class Component extends DCLogic {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("resize", resize);
     });
-  }
-
-  setupCylinder() {
-    const wrap = document.querySelector("[data-cyl-wrap]");
-    const canvas = document.querySelector("[data-cyl-canvas]");
-    const fallback = document.querySelector("[data-cyl-fallback]");
-    if (!wrap || !canvas || !("IntersectionObserver" in window)) return;
-    let started = false;
-    const io = new IntersectionObserver(async (entries) => {
-      if (started || !entries.some((e) => e.isIntersecting)) return;
-      started = true;
-      io.disconnect();
-      let THREE;
-      try {
-        THREE = await import("https://esm.sh/three@0.161.0");
-      } catch (e) { return; }
-
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-      camera.position.set(0, 1.1, 8.2);
-      camera.lookAt(0, 0, 0);
-
-      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-      const key = new THREE.DirectionalLight(0xffffff, 1.5);
-      key.position.set(4, 6, 6);
-      scene.add(key);
-      const amber = new THREE.PointLight(0xff7a00, 26, 18);
-      amber.position.set(-3.2, 1.6, 3.4);
-      scene.add(amber);
-
-      const group = new THREE.Group();
-      group.name = "cilindro";
-      const steel = new THREE.MeshStandardMaterial({ color: 0x9aa0a6, metalness: 0.92, roughness: 0.34 });
-      const brass = new THREE.MeshStandardMaterial({ color: 0xc9922e, metalness: 0.88, roughness: 0.3 });
-      const brassLight = new THREE.MeshStandardMaterial({ color: 0xe0ae4a, metalness: 0.85, roughness: 0.26 });
-
-      const body = new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.05, 4.4, 48, 1, false), steel);
-      body.rotation.z = Math.PI / 2;
-      body.name = "cuerpo";
-      group.add(body);
-
-      const plug = new THREE.Mesh(new THREE.CylinderGeometry(0.66, 0.66, 4.5, 40), brass);
-      plug.rotation.z = Math.PI / 2;
-      plug.name = "rotor";
-      group.add(plug);
-
-      const keyway = new THREE.Mesh(new THREE.BoxGeometry(4.55, 0.12, 0.5), new THREE.MeshStandardMaterial({ color: 0x141418, metalness: 0.5, roughness: 0.7 }));
-      keyway.name = "bocallave";
-      plug.add(new THREE.Object3D());
-      group.add(keyway);
-
-      const pins = [];
-      for (let i = 0; i < 5; i++) {
-        const x = -1.6 + i * 0.8;
-        const driver = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1.0, 20), brassLight);
-        driver.position.set(x, 1.05, 0);
-        driver.name = "pin-superior-" + (i + 1);
-        const keyPin = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.62, 20), brass);
-        keyPin.position.set(x, 0.3, 0);
-        keyPin.name = "pin-inferior-" + (i + 1);
-        const spring = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.035, 8, 20), brassLight);
-        spring.position.set(x, 1.82, 0);
-        spring.rotation.x = Math.PI / 2;
-        spring.name = "resorte-" + (i + 1);
-        group.add(driver, keyPin, spring);
-        pins.push({ driver, keyPin, spring, base: { d: 1.05, k: 0.3 }, phase: i });
-      }
-      scene.add(group);
-
-      const resize = () => {
-        const r = wrap.getBoundingClientRect();
-        renderer.setSize(r.width, r.height, false);
-        camera.aspect = Math.max(0.1, r.width / r.height);
-        camera.updateProjectionMatrix();
-      };
-      resize();
-      window.addEventListener("resize", resize);
-
-      canvas.style.opacity = "1";
-      if (fallback) fallback.style.opacity = "0";
-
-      let alive = true, prog = 0, target = 0;
-      const onScroll = () => {
-        const r = wrap.getBoundingClientRect();
-        const vh = window.innerHeight;
-        target = Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (vh * 0.8 + r.height * 0.4)));
-      };
-      onScroll();
-      window.addEventListener("scroll", onScroll, { passive: true });
-
-      const clock = new THREE.Clock();
-      const loop = () => {
-        if (!alive) return;
-        const t = clock.getElapsedTime();
-        prog += (target - prog) * 0.07;
-        group.rotation.y = -0.55 + prog * 1.5 + Math.sin(t * 0.22) * 0.07;
-        group.rotation.x = -0.16 + Math.sin(t * 0.17) * 0.03;
-        plug.rotation.x = prog * 0.9;
-        pins.forEach((p, i) => {
-          const local = Math.max(0, Math.min(1, (prog - i * 0.1) * 2.4));
-          const lift = local * 0.55;
-          p.driver.position.y = p.base.d + lift;
-          p.keyPin.position.y = p.base.k + lift;
-          p.spring.position.y = 1.82 + lift * 0.5;
-          p.spring.scale.y = 1 - lift * 0.3;
-        });
-        renderer.render(scene, camera);
-        requestAnimationFrame(loop);
-      };
-      requestAnimationFrame(loop);
-
-      this.cleanups.push(() => {
-        alive = false;
-        window.removeEventListener("resize", resize);
-        window.removeEventListener("scroll", onScroll);
-        renderer.dispose();
-      });
-    }, { rootMargin: "200px 0px" });
-    io.observe(wrap);
-    this.cleanups.push(() => io.disconnect());
   }
 
   renderVals() { return {}; }
