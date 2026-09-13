@@ -29,6 +29,9 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.25; }
   }
+  @media (min-width: 860px) {
+    [data-faq-media] { position: sticky; top: 96px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     [data-marquee-track] { animation: none !important; }
@@ -296,15 +299,21 @@
   </section>
 
   <section id="faq" data-screen-label="Preguntas frecuentes" style="position:relative;overflow:hidden;background:#F5F4F2;color:#0E0E10;padding:0 clamp(20px,4vw,64px) clamp(56px,8vw,110px)">
-    <div style="position:relative;max-width:820px;margin:0 auto;border-top:1px solid #D8D4CE;padding-top:clamp(48px,6vw,80px)">
-      <span aria-hidden="true" style="position:absolute;top:-30px;left:50%;width:560px;height:340px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side, rgba(255,122,0,0.14), rgba(255,122,0,0) 72%);pointer-events:none"></span>
+    <div style="position:relative;max-width:1240px;margin:0 auto;border-top:1px solid #D8D4CE;padding-top:clamp(48px,6vw,80px)">
+      <span aria-hidden="true" style="position:absolute;top:-30px;right:4%;width:480px;height:320px;border-radius:50%;background:radial-gradient(closest-side, rgba(255,122,0,0.14), rgba(255,122,0,0) 72%);pointer-events:none"></span>
 
-      <div data-reveal="1" style="position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:clamp(32px,4.5vw,52px)">
-        <span style="font-size:11.5px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#8A8680;margin-bottom:14px">05 — Preguntas frecuentes</span>
-        <h2 style="font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(28px,4vw,48px);line-height:1.05;letter-spacing:-0.035em;margin:0;text-transform:uppercase">Lo que preguntan<br />antes de llamar</h2>
-      </div>
+      <div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,64px);align-items:start">
+        <div data-reveal="1" data-faq-media="1" style="border:1px solid rgba(14,14,16,0.1);border-radius:14px;overflow:hidden;aspect-ratio:4/5;max-height:640px">
+          <img src="images/puerta-oficina.jpg" alt="Puerta de oficina con cerradura de seguridad instalada por ServiPuerta" style="width:100%;height:100%;object-fit:cover;display:block" />
+        </div>
 
-      <div style="position:relative;display:flex;flex-direction:column;gap:10px">
+        <div>
+          <div data-reveal="1" style="margin-bottom:clamp(28px,3.5vw,40px)">
+            <span style="display:block;font-size:11.5px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#8A8680;margin-bottom:14px">05 — Preguntas frecuentes</span>
+            <h2 style="font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(28px,4vw,48px);line-height:1.05;letter-spacing:-0.035em;margin:0;text-transform:uppercase">Lo que preguntan<br />antes de llamar</h2>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
         <div data-faq-item="1" data-faq-open="0" data-reveal="1" style="border:1px solid #E4E1DA;border-radius:14px;background:#FFFFFF;overflow:hidden;transition:background-color 0.3s ease,border-color 0.3s ease">
           <button type="button" data-faq-trigger="1" aria-expanded="false" style="all:unset;box-sizing:border-box;display:flex;width:100%;align-items:center;justify-content:space-between;gap:16px;padding:19px 22px;cursor:pointer;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:16.5px;letter-spacing:-0.01em;color:#55514B;text-align:left;transition:color 0.25s ease">
             <span>¿Cuánto cuesta una apertura de puerta?</span>
@@ -366,6 +375,8 @@
           </button>
           <div data-faq-panel="1" style="height:0px;overflow:hidden;transition:height 0.32s cubic-bezier(0.2,0.7,0.2,1)">
             <p style="margin:0 22px 20px;font-size:15px;line-height:1.6;color:#6B665F;max-width:680px">Sí, hacemos cerrajería automotriz: apertura de vehículos sin forzar la chapa ni dañar el burlete. Indicanos marca y modelo al llamar.</p>
+          </div>
+        </div>
           </div>
         </div>
       </div>
