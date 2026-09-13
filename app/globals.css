@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0e0e10;
+  --color-brand-amber: #ff7a00;
+  --color-brand-amber-light: #ff9026;
+  --color-brand-amber-lighter: #ffa14d;
+  --color-cream: #f5f4f2;
+  --color-slate-dark: #1a1a1e;
+  --color-body-on-dark: #d1d5db;
+  --color-eyebrow: #8a8680;
+  --color-body-on-light: #55514b;
+  --color-body-on-light-2: #6b665f;
+  --color-border-light: #d8d4ce;
+  --color-border-light-2: #e4e1da;
+  --color-border-light-3: #e3e0db;
+  --color-pill-ink: #3a3733;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-chip: 4px;
+  --radius-btn: 8px;
+  --radius-card: 6px;
+  --radius-faq: 14px;
+  --radius-pill: 999px;
+
+  --breakpoint-sp: 860px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--color-brand-amber);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 34s linear infinite;
+}
+
+@keyframes pulse-cta {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 122, 0, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(255, 122, 0, 0);
+  }
+}
+.animate-pulse-cta {
+  animation: pulse-cta 2.6s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-pulse-cta {
+    animation: none !important;
+  }
+}
