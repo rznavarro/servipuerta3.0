@@ -44,10 +44,10 @@ export default function CerradurasDigitales() {
         </div>
         <Reveal className="overflow-hidden rounded-card border border-white/[0.12]">
           <ParallaxImage
-            src="/images/app-control.jpg"
-            alt="Cerradura digital con teclado y lector de huella controlada desde la app en un smartphone"
+            src="/images/apertura-vehiculo.jpg"
+            alt="Técnico usando una herramienta de apertura en la puerta de un vehículo de noche"
             amount={0.06}
-            className="aspect-[4/3] sp:aspect-auto sp:h-full"
+            className="aspect-[4/3]"
             sizes="(min-width: 860px) 50vw, 100vw"
           />
         </Reveal>
