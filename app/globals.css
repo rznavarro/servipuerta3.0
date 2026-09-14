@@ -40,8 +40,10 @@ body {
   overflow-x: hidden;
 }
 
-a {
-  color: var(--color-brand-amber);
+@layer base {
+  a {
+    color: var(--color-brand-amber);
+  }
 }
 
 @keyframes marquee {
