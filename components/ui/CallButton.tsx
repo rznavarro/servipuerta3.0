@@ -9,7 +9,7 @@ export default function CallButton({ className }: CallButtonProps) {
       href={business.phoneHref}
       aria-label={`Llamar ahora al ${business.phone}`}
       className={cn(
-        "animate-pulse-cta flex flex-col gap-0.5 rounded-btn bg-brand-amber px-[30px] py-[18px] text-ink transition-colors duration-200 hover:bg-brand-amber-light",
+        "animate-pulse-cta flex flex-col gap-0.5 rounded-btn bg-brand-amber px-[30px] py-[18px] text-white transition-colors duration-200 hover:bg-brand-amber-light",
         className,
       )}
     >
